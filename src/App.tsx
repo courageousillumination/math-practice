@@ -1,5 +1,5 @@
 import { Provider } from "@/components/ui/provider";
-import LandingPage from "@/components/LandingPage";
+import LandingPage from "@/components/pages/LandingPage";
 
 function App() {
   return (
