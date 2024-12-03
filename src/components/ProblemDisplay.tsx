@@ -21,8 +21,8 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
-    }, 1000);
+      setElapsedTime((Date.now() - startTime) / 1000);
+    }, 100);
 
     return () => clearInterval(interval);
   }, [startTime]);
@@ -54,7 +54,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
 
   return (
     <VStack gap={4} align="center">
-      <Text fontSize="lg">Time Elapsed: {elapsedTime} seconds</Text>
+      <Text fontSize="lg">Time Elapsed: {elapsedTime.toFixed(1)} seconds</Text>
       <HStack gap={2}>
         <Text fontSize="2xl">{problem.operand1}</Text>
         <Text fontSize="2xl">{operationSymbol}</Text>
