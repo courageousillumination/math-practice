@@ -1,4 +1,4 @@
-import { generateProblem } from "@/logic/generate-problem";
+import { generateProblem, problemEqual } from "@/logic/problem";
 import { Answer } from "@/types/answer";
 import { Problem } from "@/types/problem";
 import { TrainingRoutine } from "@/types/training-routine";
@@ -50,9 +50,20 @@ export const RoutineInternal: React.FC<{ routine: TrainingRoutine }> = ({
 
   useEffect(() => {
     if (!isDone(routine, progress)) {
-      setProblem(
-        generateProblem(routine.sections[progress.sectionIdx].problemTemplate)
-      );
+      setProblem((x) => {
+        // Prevent duplicates. There is a way to do this determinstically, but
+        // I'm not going to bother right now. To prevent a possible infinite loop
+        // we'll just do this once.
+        let newProblem = generateProblem(
+          routine.sections[progress.sectionIdx].problemTemplate
+        );
+        if (x !== null && problemEqual(newProblem, x)) {
+          newProblem = generateProblem(
+            routine.sections[progress.sectionIdx].problemTemplate
+          );
+        }
+        return newProblem;
+      });
     } else {
       navigate("/results", {
         state: {
