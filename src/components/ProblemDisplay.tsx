@@ -4,6 +4,9 @@ import { Problem } from "@/types/problem";
 import { Answer } from "@/types/answer";
 
 interface ProblemDisplayProps {
+  /** Text to be displayed. */
+  displayText: JSX.Element;
+
   /** The problem itself. */
   problem: Problem;
 
@@ -14,6 +17,7 @@ interface ProblemDisplayProps {
 export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
   problem,
   onSubmit,
+  displayText,
 }) => {
   const [answer, setAnswer] = useState("");
   const [startTime, setStartTime] = useState(Date.now());
@@ -53,8 +57,11 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
   const operationSymbol = problem.type === "addition" ? "+" : "*";
 
   return (
-    <VStack gap={4} align="center">
-      <Text fontSize="lg">Time Elapsed: {elapsedTime.toFixed(1)} seconds</Text>
+    <VStack align="center">
+      <Box width="100%" display="flex" justifyContent={"space-between"}>
+        {displayText}
+        <Text fontSize="lg">{elapsedTime.toFixed(1)}s</Text>
+      </Box>
       <HStack gap={2}>
         <Text fontSize="2xl">{problem.operand1}</Text>
         <Text fontSize="2xl">{operationSymbol}</Text>
@@ -89,7 +96,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
             )
           )}
         </Box>
-        <Button type="submit" colorScheme="teal" size="lg" mt={4}>
+        <Button width="100%" type="submit" colorScheme="teal" size="lg" mt={4}>
           Submit
         </Button>
       </form>

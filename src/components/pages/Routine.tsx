@@ -5,6 +5,29 @@ import { TrainingRoutine } from "@/types/training-routine";
 import { useEffect, useState } from "react";
 import { ProblemDisplay } from "../ProblemDisplay";
 import { useLocation, useNavigate } from "react-router";
+import { VStack, Heading, Text } from "@chakra-ui/react";
+
+interface RoutineProgress {
+  sectionIdx: number;
+  problemIdx: number;
+}
+
+/** Is the routine done? */
+const isDone = (routine: TrainingRoutine, progress: RoutineProgress) => {
+  return progress.sectionIdx >= routine.sections.length;
+};
+
+/** Move to the next problem. */
+const nextProblem = (routine: TrainingRoutine, progress: RoutineProgress) => {
+  if (isDone(routine, progress)) {
+    return progress;
+  }
+  if (progress.problemIdx + 1 < routine.sections[progress.sectionIdx].count) {
+    return { ...progress, problemIdx: progress.problemIdx + 1 };
+  } else {
+    return { sectionIdx: progress.sectionIdx + 1, problemIdx: 0 };
+  }
+};
 
 /**
  * Display for a full practice routine.
@@ -12,34 +35,51 @@ import { useLocation, useNavigate } from "react-router";
 export const RoutineInternal: React.FC<{ routine: TrainingRoutine }> = ({
   routine,
 }) => {
-  const [currentProblemIdx, setCurrentProblemIdx] = useState(0);
+  const [progress, setProgress] = useState<RoutineProgress>({
+    sectionIdx: 0,
+    problemIdx: 0,
+  });
   const [problem, setProblem] = useState<Problem | null>(null);
   const [history, setHistory] = useState<Answer[]>([]);
   const navigate = useNavigate();
 
-  // Generate a new problem whenever the problem id changes.
-  useEffect(() => {
-    if (currentProblemIdx < routine.problems.length) {
-      setProblem(generateProblem(routine.problems[currentProblemIdx]));
-    }
-  }, [routine, currentProblemIdx]);
-
   const onSubmit = (answer: Answer) => {
     setHistory((x) => [...x, answer]);
-    setCurrentProblemIdx((x) => x + 1);
+    const next = nextProblem(routine, progress);
+    setProgress(next);
   };
 
   useEffect(() => {
-    if (currentProblemIdx >= routine.problems.length) {
+    if (!isDone(routine, progress)) {
+      setProblem(
+        generateProblem(routine.sections[progress.sectionIdx].problemTemplate)
+      );
+    } else {
       navigate("/results", { state: { history } });
     }
-  }, [currentProblemIdx, navigate, history, routine]);
+  }, [progress, routine, history, navigate]);
 
-  if (currentProblemIdx < routine.problems.length) {
-    if (problem === null) return null;
-    return <ProblemDisplay problem={problem} onSubmit={onSubmit} />;
-  }
-  return null;
+  const currentSection = routine.sections[progress.sectionIdx];
+  if (problem === null || !currentSection) return null;
+
+  return (
+    <VStack>
+      <Heading>
+        {currentSection.name || `Section ${progress.sectionIdx + 1}`} (
+        {progress.sectionIdx + 1} / {routine.sections.length})
+      </Heading>
+
+      <ProblemDisplay
+        displayText={
+          <Text>
+            {progress.problemIdx + 1} / {currentSection.count}
+          </Text>
+        }
+        problem={problem}
+        onSubmit={onSubmit}
+      />
+    </VStack>
+  );
 };
 
 /** Location based routine. */
