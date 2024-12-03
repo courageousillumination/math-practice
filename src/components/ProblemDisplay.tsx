@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Box, Button, Input, Text, VStack, HStack } from "@chakra-ui/react";
 import { Problem } from "@/types/problem";
 
 interface ProblemDisplayProps {
@@ -41,26 +42,30 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({ problem, onSubmi
   const operationSymbol = problem.type === "addition" ? "+" : "*";
 
   return (
-    <div>
-      <div>
-        <span>{problem.operand1}</span>
-        <span> {operationSymbol} </span>
-        <span>{problem.operand2}</span>
-      </div>
-      <div>
-        <input type="text" value={answer} onChange={handleInputChange} />
-      </div>
-      <div>
+    <VStack spacing={4} align="center">
+      <HStack spacing={2}>
+        <Text fontSize="2xl">{problem.operand1}</Text>
+        <Text fontSize="2xl">{operationSymbol}</Text>
+        <Text fontSize="2xl">{problem.operand2}</Text>
+      </HStack>
+      <Input
+        value={answer}
+        onChange={handleInputChange}
+        placeholder="Enter your answer"
+        size="lg"
+        textAlign="center"
+      />
+      <HStack spacing={2}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
-          <button key={num} onClick={() => handleNumberClick(num)}>
+          <Button key={num} onClick={() => handleNumberClick(num)} size="lg">
             {num}
-          </button>
+          </Button>
         ))}
-      </div>
-      <div>
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
-      <div>Time Elapsed: {elapsedTime}s</div>
-    </div>
+      </HStack>
+      <Button onClick={handleSubmit} colorScheme="teal" size="lg">
+        Submit
+      </Button>
+      <Text fontSize="lg">Time Elapsed: {elapsedTime}s</Text>
+    </VStack>
   );
 };
