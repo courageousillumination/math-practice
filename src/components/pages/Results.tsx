@@ -1,21 +1,25 @@
+import { saveSummaryResults } from "@/logic/practice-history";
 import { solveProblem } from "@/logic/problem";
+import { summarizeResults } from "@/logic/summary";
 import { TrainingRoutineResults } from "@/types/training-routine-results";
-import { VStack, Text, Table, Button } from "@chakra-ui/react";
-import React from "react";
+import { VStack, Text, Table } from "@chakra-ui/react";
+import React, { useEffect, useMemo } from "react";
 import { useLocation } from "react-router";
+import { SummaryResultTable } from "../SummaryResultTable";
 
 export const ResultsInternal: React.FC<{ results: TrainingRoutineResults }> = ({
   results,
 }) => {
-  const saveResults = () => {
-    const existingResults = JSON.parse(localStorage.getItem("results") || "[]");
-    localStorage.setItem("results", JSON.stringify([...existingResults, results]));
-  };
+  const summaryResults = useMemo(() => summarizeResults(results), [results]);
+  useEffect(() => {
+    saveSummaryResults(summaryResults);
+  }, [summaryResults]);
 
   return (
-    <Button onClick={saveResults}>Save Results</Button>
     <VStack gap={4} align="start">
-      <Text fontSize="2xl">Results</Text>
+      <Text fontSize="2xl">Summary Results</Text>
+      <SummaryResultTable summaryResults={summaryResults} />
+      <Text fontSize="2xl">Problem Results</Text>
       <Table.Root>
         <Table.Header>
           <Table.Row>

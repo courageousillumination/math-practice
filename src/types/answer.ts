@@ -9,4 +9,7 @@ export interface Answer {
 
   /** The user's answer. */
   answer: number;
+
+  /** Whether the answer is correct. */
+  correct: boolean;
 }

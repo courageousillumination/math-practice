@@ -1,46 +1,39 @@
 import React from "react";
-import { VStack, Text, Table } from "@chakra-ui/react";
+import { Box, Button, Heading, VStack } from "@chakra-ui/react";
+import {
+  loadSummaryResults,
+  removeSummaryResults,
+} from "@/logic/practice-history";
+import { SummaryResultTable } from "../SummaryResultTable";
 
 export const HistoricalResults: React.FC = () => {
-  const results = JSON.parse(localStorage.getItem("results") || "[]");
-
+  const data = loadSummaryResults();
   return (
     <VStack gap={4} align="start">
-      <Text fontSize="2xl">Historical Results</Text>
-      <Table.Root>
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeader>Date</Table.ColumnHeader>
-            <Table.ColumnHeader>Problem</Table.ColumnHeader>
-            <Table.ColumnHeader>Your Answer</Table.ColumnHeader>
-            <Table.ColumnHeader>Correct</Table.ColumnHeader>
-            <Table.ColumnHeader>Correct Answer</Table.ColumnHeader>
-            <Table.ColumnHeader>Time Taken (s)</Table.ColumnHeader>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {results.map((result: any, resultIndex: number) =>
-            result.answers.map((answer: any, index: number) => {
-              const correctAnswer = answer.problem.correctAnswer;
-              const isCorrect = answer.answer === correctAnswer;
-              return (
-                <Table.Row key={`${resultIndex}-${index}`}>
-                  <Table.Cell>{new Date(result.time).toLocaleString()}</Table.Cell>
-                  <Table.Cell>
-                    {answer.problem.operand1}{" "}
-                    {answer.problem.type === "addition" ? "+" : "*"}{" "}
-                    {answer.problem.operand2}
-                  </Table.Cell>
-                  <Table.Cell>{answer.answer}</Table.Cell>
-                  <Table.Cell>{isCorrect ? "Yes" : "No"}</Table.Cell>
-                  <Table.Cell>{isCorrect ? "-" : correctAnswer}</Table.Cell>
-                  <Table.Cell>{answer.timeTaken.toFixed(2)}</Table.Cell>
-                </Table.Row>
-              );
-            })
-          )}
-        </Table.Body>
-      </Table.Root>
+      {data.map((x) => {
+        return (
+          <Box width="100%">
+            <Box
+              display="flex"
+              alignItems={"center"}
+              justifyContent={"space-between"}
+            >
+              <Heading>{x.time}</Heading>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  removeSummaryResults(x);
+                  // Statee management is not worth it.
+                  window.location.reload();
+                }}
+              >
+                Remove
+              </Button>
+            </Box>
+            <SummaryResultTable summaryResults={x} />
+          </Box>
+        );
+      })}
     </VStack>
   );
 };

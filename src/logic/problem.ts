@@ -12,6 +12,7 @@ export const generateProblem = (template: ProblemTemplate): Problem => {
       type: template.type,
       operand1: generateNumber(template.scale1),
       operand2: generateNumber(template.scale2),
+      template,
     };
   }
   throw new Error("Unknown problem type");
@@ -36,6 +37,11 @@ export const solveProblem = (problem: Problem): number => {
     default:
       throw new Error(`Unhandled problem type: ${problem.type}`);
   }
+};
+
+/** Returns a unique ID for a problem. */
+export const getProblemTypeId = (problem: ProblemTemplate): string => {
+  return `${problem.scale1}x${problem.scale2} ${problem.type}`;
 };
 
 /** Generates a number at the given scale. */

@@ -54,6 +54,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
       problem,
       answer: parseFloat(answer),
       timeTaken: (Date.now() - startTime) / 1000,
+      correct: parseFloat(answer) === solveProblem(problem),
     });
   }, [answer, problem, startTime, onSubmit]);
 
