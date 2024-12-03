@@ -1,7 +1,7 @@
 import { Provider } from "@/components/ui/provider";
-import { Box, Container, Link } from "@chakra-ui/react";
+import { Box, Container, Link as ChakraLink } from "@chakra-ui/react";
 import LandingPage from "@/components/pages/LandingPage";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Link } from "react-router";
 import { Routine } from "./components/pages/Routine";
 import { Results } from "./components/pages/Results";
 
@@ -10,9 +10,9 @@ function App() {
     <Provider>
       <BrowserRouter>
         <Box as="header" color="white" p={4}>
-          <Link href="/" fontSize="xl" fontWeight="bold">
-            Math Trainer
-          </Link>
+          <ChakraLink asChild fontSize="xl" fontWeight="bold">
+            <Link to="/">Math Trainer</Link>
+          </ChakraLink>
         </Box>
         <Container>
           <Routes>

@@ -1,4 +1,4 @@
-import { generateProblem, problemEqual } from "@/logic/problem";
+import { generateProblem, problemEqual, solveProblem } from "@/logic/problem";
 import { Answer } from "@/types/answer";
 import { Problem } from "@/types/problem";
 import { TrainingRoutine } from "@/types/training-routine";
@@ -40,16 +40,18 @@ export const RoutineInternal: React.FC<{ routine: TrainingRoutine }> = ({
   });
   const [problem, setProblem] = useState<Problem | null>(null);
   const [history, setHistory] = useState<Answer[]>([]);
-  const [lastAnswerCorrect, setLastAnswerCorrect] = useState<boolean | null>(null);
+  const [lastAnswerCorrect, setLastAnswerCorrect] = useState<boolean | null>(
+    null
+  );
   const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const onSubmit = (answer: Answer) => {
     setHistory((x) => [...x, answer]);
-    const currentProblem = routine.sections[progress.sectionIdx].problemTemplate;
-    const isCorrect = answer.answer === currentProblem.correctAnswer;
+    const isCorrect = answer.answer === solveProblem(problem!);
     setLastAnswerCorrect(isCorrect);
     if (!isCorrect) {
-      setCorrectAnswer(currentProblem.correctAnswer);
+      setCorrectAnswer(solveProblem(problem!));
     }
     const next = nextProblem(routine, progress);
     setProgress(next);

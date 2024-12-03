@@ -1,4 +1,4 @@
-import { solveProblem } from "@/logic/solve-problem";
+import { solveProblem } from "@/logic/problem";
 import { TrainingRoutineResults } from "@/types/training-routine-results";
 import { VStack, Text, Table } from "@chakra-ui/react";
 import React from "react";

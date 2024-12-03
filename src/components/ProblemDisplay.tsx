@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Box, Button, Input, Text, VStack, HStack } from "@chakra-ui/react";
 import { Problem } from "@/types/problem";
 import { Answer } from "@/types/answer";
-import { solveProblem } from "@/logic/solve-problem";
+import { solveProblem } from "@/logic/problem";
 
 interface ProblemDisplayProps {
   /** Text to be displayed. */
