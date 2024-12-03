@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Input, Text, VStack, HStack } from "@chakra-ui/react";
 import { Problem } from "@/types/problem";
 import { Answer } from "@/types/answer";
@@ -17,6 +17,15 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
 }) => {
   const [answer, setAnswer] = useState("");
   const [startTime] = useState(Date.now());
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [startTime]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(e.target.value);
@@ -39,6 +48,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
 
   return (
     <VStack gap={4} align="center">
+      <Text fontSize="lg">Time Elapsed: {elapsedTime} seconds</Text>
       <HStack gap={2}>
         <Text fontSize="2xl">{problem.operand1}</Text>
         <Text fontSize="2xl">{operationSymbol}</Text>
