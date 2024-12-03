@@ -89,7 +89,6 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
           autoFocus
           value={answer}
           onChange={handleInputChange}
-          placeholder="Enter your answer"
           size="lg"
           textAlign="center"
           mb={4}
