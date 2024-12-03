@@ -5,7 +5,7 @@ import { TrainingRoutine } from "@/types/training-routine";
 import { useEffect, useState } from "react";
 import { ProblemDisplay } from "../ProblemDisplay";
 import { useLocation, useNavigate } from "react-router";
-import { VStack, Heading, Text } from "@chakra-ui/react";
+import { VStack, Heading, Text, Box } from "@chakra-ui/react";
 import { TrainingRoutineResults } from "@/types/training-routine-results";
 
 interface RoutineProgress {
@@ -40,10 +40,17 @@ export const RoutineInternal: React.FC<{ routine: TrainingRoutine }> = ({
   });
   const [problem, setProblem] = useState<Problem | null>(null);
   const [history, setHistory] = useState<Answer[]>([]);
-  const navigate = useNavigate();
+  const [lastAnswerCorrect, setLastAnswerCorrect] = useState<boolean | null>(null);
+  const [correctAnswer, setCorrectAnswer] = useState<number | null>(null);
 
   const onSubmit = (answer: Answer) => {
     setHistory((x) => [...x, answer]);
+    const currentProblem = routine.sections[progress.sectionIdx].problemTemplate;
+    const isCorrect = answer.answer === currentProblem.correctAnswer;
+    setLastAnswerCorrect(isCorrect);
+    if (!isCorrect) {
+      setCorrectAnswer(currentProblem.correctAnswer);
+    }
     const next = nextProblem(routine, progress);
     setProgress(next);
   };
@@ -95,6 +102,13 @@ export const RoutineInternal: React.FC<{ routine: TrainingRoutine }> = ({
         problem={problem}
         onSubmit={onSubmit}
       />
+      {lastAnswerCorrect !== null && (
+        <Box color={lastAnswerCorrect ? "green" : "red"}>
+          {lastAnswerCorrect
+            ? "Correct!"
+            : `Incorrect. The correct answer was ${correctAnswer}.`}
+        </Box>
+      )}
     </VStack>
   );
 };
