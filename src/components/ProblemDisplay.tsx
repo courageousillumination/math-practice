@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Box, Button, Input, Text, VStack, HStack } from "@chakra-ui/react";
 import { Problem } from "@/types/problem";
 import { Answer } from "@/types/answer";
+import { solveProblem } from "@/logic/solve-problem";
 
 interface ProblemDisplayProps {
   /** Text to be displayed. */
@@ -22,6 +23,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
   const [answer, setAnswer] = useState("");
   const [startTime, setStartTime] = useState(Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [hasAutoSubmitted, setHasAutosubmitted] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -35,6 +37,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
     setAnswer("");
     setStartTime(Date.now());
     setElapsedTime(0);
+    setHasAutosubmitted(false);
   }, [problem]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,14 +48,23 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
     setAnswer((prev) => prev + num);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(() => {
+    console.log();
     onSubmit({
       problem,
       answer: parseFloat(answer),
       timeTaken: (Date.now() - startTime) / 1000,
     });
-  };
+  }, [answer, problem, startTime, onSubmit]);
+
+  useEffect(() => {
+    if (hasAutoSubmitted) return;
+    const correctAnswer = solveProblem(problem);
+    if (correctAnswer === parseFloat(answer)) {
+      handleSubmit();
+      setHasAutosubmitted(true);
+    }
+  }, [answer, problem, handleSubmit, hasAutoSubmitted]);
 
   const operationSymbol = problem.type === "addition" ? "+" : "*";
 
@@ -67,7 +79,12 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
         <Text fontSize="2xl">{operationSymbol}</Text>
         <Text fontSize="2xl">{problem.operand2}</Text>
       </HStack>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
         <Input
           autoFocus
           value={answer}
