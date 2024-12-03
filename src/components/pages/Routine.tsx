@@ -1,9 +1,9 @@
 import { generateProblem } from "@/logic/generate-problem";
+import { Answer } from "@/types/answer";
 import { Problem } from "@/types/problem";
 import { TrainingRoutine } from "@/types/training-routine";
 import { useEffect, useState } from "react";
 import { ProblemDisplay } from "../ProblemDisplay";
-import { Answer } from "@/types/answer";
 
 /**
  * Display for a full practice routine.
