@@ -37,11 +37,11 @@ export const SECTIONS = [
 
 export const Multiplication2x2Routine: TrainingRoutine = {
   sections: [
-    { ...Addition1x1, count: 1 },
-    { ...Addition2x2, count: 1 },
-    { ...Multiplication1x1, count: 1 },
-    { ...Multiplication2x1, count: 1 },
-    { ...Multiplication2x2, count: 1 },
+    { ...Addition1x1, count: 20 },
+    { ...Multiplication1x1, count: 20 },
+    { ...Addition2x2, count: 10 },
+    { ...Multiplication2x1, count: 10 },
+    { ...Multiplication2x2, count: 5 },
   ],
 };
 
