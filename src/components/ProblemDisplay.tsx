@@ -55,13 +55,27 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({ problem, onSubmi
         size="lg"
         textAlign="center"
       />
-      <HStack spacing={2}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
-          <Button key={num} onClick={() => handleNumberClick(num)} size="lg">
-            {num}
-          </Button>
+      <VStack spacing={2}>
+        {[["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["-", "0", "Del"]].map((row, rowIndex) => (
+          <HStack key={rowIndex} spacing={2}>
+            {row.map((item) => (
+              <Button
+                key={item}
+                onClick={() => {
+                  if (item === "Del") {
+                    setAnswer((prev) => prev.slice(0, -1));
+                  } else {
+                    handleNumberClick(item);
+                  }
+                }}
+                size="lg"
+              >
+                {item}
+              </Button>
+            ))}
+          </HStack>
         ))}
-      </HStack>
+      </VStack>
       <Button onClick={handleSubmit} colorScheme="teal" size="lg">
         Submit
       </Button>
