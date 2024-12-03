@@ -4,17 +4,18 @@ import { Problem } from "@/types/problem";
 import { TrainingRoutine } from "@/types/training-routine";
 import { useEffect, useState } from "react";
 import { ProblemDisplay } from "../ProblemDisplay";
-import { Results } from "./Results";
+import { useLocation, useNavigate } from "react-router";
 
 /**
  * Display for a full practice routine.
  */
-export const Routine: React.FC<{ routine: TrainingRoutine }> = ({
+export const RoutineInternal: React.FC<{ routine: TrainingRoutine }> = ({
   routine,
 }) => {
   const [currentProblemIdx, setCurrentProblemIdx] = useState(0);
   const [problem, setProblem] = useState<Problem | null>(null);
   const [history, setHistory] = useState<Answer[]>([]);
+  const navigate = useNavigate();
 
   // Generate a new problem whenever the problem id changes.
   useEffect(() => {
@@ -28,10 +29,21 @@ export const Routine: React.FC<{ routine: TrainingRoutine }> = ({
     setCurrentProblemIdx((x) => x + 1);
   };
 
+  useEffect(() => {
+    if (currentProblemIdx >= routine.problems.length) {
+      navigate("/results", { state: { history } });
+    }
+  }, [currentProblemIdx, navigate, history, routine]);
+
   if (currentProblemIdx < routine.problems.length) {
     if (problem === null) return null;
     return <ProblemDisplay problem={problem} onSubmit={onSubmit} />;
-  } else {
-    return <Results history={history} />;
   }
+  return null;
+};
+
+/** Location based routine. */
+export const Routine = () => {
+  const location = useLocation();
+  return <RoutineInternal routine={location.state.routine} />;
 };

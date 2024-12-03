@@ -1,10 +1,17 @@
 import { solveProblem } from "@/logic/solve-problem";
 import { Answer } from "@/types/answer";
-import { VStack, Text, Table } from "@chakra-ui/react";
+import { VStack, Text, Table, Link as ChakraLink } from "@chakra-ui/react";
+import React from "react";
+import { Link, useLocation } from "react-router";
 
-export const Results: React.FC<{ history: Answer[] }> = ({ history }) => {
+export const ResultsInternal: React.FC<{ history: Answer[] }> = ({
+  history,
+}) => {
   return (
     <VStack gap={4} align="start">
+      <ChakraLink asChild>
+        <Link to="/">Back</Link>
+      </ChakraLink>
       <Text fontSize="2xl">History</Text>
       <Table.Root>
         <Table.Header>
@@ -38,4 +45,9 @@ export const Results: React.FC<{ history: Answer[] }> = ({ history }) => {
       </Table.Root>
     </VStack>
   );
+};
+
+export const Results: React.FC = () => {
+  const location = useLocation();
+  return <ResultsInternal history={location.state.history} />;
 };
