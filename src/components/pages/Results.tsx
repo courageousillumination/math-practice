@@ -1,13 +1,19 @@
 import { solveProblem } from "@/logic/problem";
 import { TrainingRoutineResults } from "@/types/training-routine-results";
-import { VStack, Text, Table } from "@chakra-ui/react";
+import { VStack, Text, Table, Button } from "@chakra-ui/react";
 import React from "react";
 import { useLocation } from "react-router";
 
 export const ResultsInternal: React.FC<{ results: TrainingRoutineResults }> = ({
   results,
 }) => {
+  const saveResults = () => {
+    const existingResults = JSON.parse(localStorage.getItem("results") || "[]");
+    localStorage.setItem("results", JSON.stringify([...existingResults, results]));
+  };
+
   return (
+    <Button onClick={saveResults}>Save Results</Button>
     <VStack gap={4} align="start">
       <Text fontSize="2xl">Results</Text>
       <Table.Root>
