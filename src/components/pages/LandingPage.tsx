@@ -6,15 +6,18 @@ function LandingPage() {
       <Heading as="h1" size="2xl" mb={8}>
         Math Training
       </Heading>
+      <Button colorScheme="teal" size="lg" width="100%" mb={8}>
+        Quick Start
+      </Button>
       <VStack direction={["column", "row"]} gap={4}>
         <Button colorScheme="teal" size="lg" width="100%">
-          Quick Start
+          Addition
         </Button>
         <Button colorScheme="teal" size="lg" width="100%">
-          Choose Routine
+          Multiplication
         </Button>
         <Button colorScheme="teal" size="lg" width="100%">
-          Create Routine
+          Placeholder
         </Button>
       </VStack>
     </VStack>
