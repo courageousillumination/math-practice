@@ -87,7 +87,6 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
         }}
       >
         <Input
-          autoFocus
           value={answer}
           onChange={handleInputChange}
           size="lg"
