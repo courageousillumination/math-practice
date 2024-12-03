@@ -14,7 +14,7 @@ function App() {
             <Link to="/">Math Trainer</Link>
           </ChakraLink>
         </Box>
-        <Container>
+        <Container centerContent>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/practice" element={<Routine />} />
