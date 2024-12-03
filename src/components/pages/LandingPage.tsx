@@ -29,9 +29,6 @@ function LandingPage() {
 
   return (
     <VStack justify="center" p={4}>
-      <Heading as="h1" size="2xl" mb={8}>
-        Math Training
-      </Heading>
       <Heading size="lg" as="h2">
         Choose a full routine
       </Heading>

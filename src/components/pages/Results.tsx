@@ -1,18 +1,15 @@
 import { solveProblem } from "@/logic/solve-problem";
 import { TrainingRoutineResults } from "@/types/training-routine-results";
-import { VStack, Text, Table, Link as ChakraLink } from "@chakra-ui/react";
+import { VStack, Text, Table } from "@chakra-ui/react";
 import React from "react";
-import { Link, useLocation } from "react-router";
+import { useLocation } from "react-router";
 
 export const ResultsInternal: React.FC<{ results: TrainingRoutineResults }> = ({
   results,
 }) => {
   return (
     <VStack gap={4} align="start">
-      <ChakraLink asChild>
-        <Link to="/">Back</Link>
-      </ChakraLink>
-      <Text fontSize="2xl">History</Text>
+      <Text fontSize="2xl">Results</Text>
       <Table.Root>
         <Table.Header>
           <Table.Row>
