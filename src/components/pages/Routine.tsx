@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ProblemDisplay } from "../ProblemDisplay";
 import { useLocation, useNavigate } from "react-router";
 import { VStack, Heading, Text } from "@chakra-ui/react";
+import { TrainingRoutineResults } from "@/types/training-routine-results";
 
 interface RoutineProgress {
   sectionIdx: number;
@@ -29,9 +30,7 @@ const nextProblem = (routine: TrainingRoutine, progress: RoutineProgress) => {
   }
 };
 
-/**
- * Display for a full practice routine.
- */
+/** Display for a full practice routine. */
 export const RoutineInternal: React.FC<{ routine: TrainingRoutine }> = ({
   routine,
 }) => {
@@ -55,7 +54,14 @@ export const RoutineInternal: React.FC<{ routine: TrainingRoutine }> = ({
         generateProblem(routine.sections[progress.sectionIdx].problemTemplate)
       );
     } else {
-      navigate("/results", { state: { history } });
+      navigate("/results", {
+        state: {
+          results: {
+            answers: history,
+            time: new Date().toISOString(),
+          } as TrainingRoutineResults,
+        },
+      });
     }
   }, [progress, routine, history, navigate]);
 

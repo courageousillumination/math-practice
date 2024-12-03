@@ -1,7 +1,7 @@
 import { ProblemTemplate } from "./problem-template";
 
 /** A section of a routine. */
-interface Section {
+export interface Section {
   /** The section name. */
   name?: string;
 

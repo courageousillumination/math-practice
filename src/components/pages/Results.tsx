@@ -1,11 +1,11 @@
 import { solveProblem } from "@/logic/solve-problem";
-import { Answer } from "@/types/answer";
+import { TrainingRoutineResults } from "@/types/training-routine-results";
 import { VStack, Text, Table, Link as ChakraLink } from "@chakra-ui/react";
 import React from "react";
 import { Link, useLocation } from "react-router";
 
-export const ResultsInternal: React.FC<{ history: Answer[] }> = ({
-  history,
+export const ResultsInternal: React.FC<{ results: TrainingRoutineResults }> = ({
+  results,
 }) => {
   return (
     <VStack gap={4} align="start">
@@ -24,7 +24,7 @@ export const ResultsInternal: React.FC<{ history: Answer[] }> = ({
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {history.map((answer, index) => {
+          {results.answers.map((answer, index) => {
             const correctAnswer = solveProblem(answer.problem);
             const isCorrect = answer.answer === correctAnswer;
             return (
@@ -49,5 +49,5 @@ export const ResultsInternal: React.FC<{ history: Answer[] }> = ({
 
 export const Results: React.FC = () => {
   const location = useLocation();
-  return <ResultsInternal history={location.state.history} />;
+  return <ResultsInternal results={location.state.results} />;
 };
