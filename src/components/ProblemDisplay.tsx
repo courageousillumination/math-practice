@@ -34,7 +34,8 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({ problem, onSubmi
     setAnswer((prev) => prev + num.toString());
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (intervalId) clearInterval(intervalId);
     onSubmit();
   };
@@ -48,37 +49,36 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({ problem, onSubmi
         <Text fontSize="2xl">{operationSymbol}</Text>
         <Text fontSize="2xl">{problem.operand2}</Text>
       </HStack>
-      <Input
-        value={answer}
-        onChange={handleInputChange}
-        placeholder="Enter your answer"
-        size="lg"
-        textAlign="center"
-      />
-      <VStack spacing={2}>
-        {[["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"], ["-", "0", "Del"]].map((row, rowIndex) => (
-          <HStack key={rowIndex} spacing={2}>
-            {row.map((item) => (
-              <Button
-                key={item}
-                onClick={() => {
-                  if (item === "Del") {
-                    setAnswer((prev) => prev.slice(0, -1));
-                  } else {
-                    handleNumberClick(item);
-                  }
-                }}
-                size="lg"
-              >
-                {item}
-              </Button>
-            ))}
-          </HStack>
-        ))}
-      </VStack>
-      <Button onClick={handleSubmit} colorScheme="teal" size="lg">
-        Submit
-      </Button>
+      <form onSubmit={handleSubmit}>
+        <Input
+          value={answer}
+          onChange={handleInputChange}
+          placeholder="Enter your answer"
+          size="lg"
+          textAlign="center"
+          mb={4}
+        />
+        <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
+          {["1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "0", "Del"].map((item) => (
+            <Button
+              key={item}
+              onClick={() => {
+                if (item === "Del") {
+                  setAnswer((prev) => prev.slice(0, -1));
+                } else {
+                  handleNumberClick(item);
+                }
+              }}
+              size="lg"
+            >
+              {item}
+            </Button>
+          ))}
+        </Box>
+        <Button type="submit" colorScheme="teal" size="lg" mt={4}>
+          Submit
+        </Button>
+      </form>
       <Text fontSize="lg">Time Elapsed: {elapsedTime}s</Text>
     </VStack>
   );
