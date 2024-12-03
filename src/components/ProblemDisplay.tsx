@@ -91,6 +91,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
           onChange={handleInputChange}
           size="lg"
           textAlign="center"
+          type="number"
           mb={4}
         />
         <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
