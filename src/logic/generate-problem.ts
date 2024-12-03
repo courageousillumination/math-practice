@@ -8,19 +8,18 @@ const BINARY_OPERANDS: BinaryOperand[] = ["addition", "multiplication"];
  */
 export const generateProblem = (template: ProblemTemplate): Problem => {
   if (BINARY_OPERANDS.includes(template.type)) {
-    const min1 = Math.pow(10, template.scale1 - 1);
-    const max1 = Math.pow(10, template.scale1) - 1;
-    const operand1 = Math.floor(Math.random() * (max1 - min1 + 1)) + min1;
-
-    const min2 = Math.pow(10, template.scale2 - 1);
-    const max2 = Math.pow(10, template.scale2) - 1;
-    const operand2 = Math.floor(Math.random() * (max2 - min2 + 1)) + min2;
-
     return {
       type: template.type,
-      operand1,
-      operand2,
+      operand1: generateNumber(template.scale1),
+      operand2: generateNumber(template.scale2),
     };
   }
   throw new Error("Unknown problem type");
+};
+
+/** Generates a number at the given scale. */
+const generateNumber = (scale: number) => {
+  const min = Math.pow(10, scale - 1);
+  const max = Math.pow(10, scale) - 1;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };

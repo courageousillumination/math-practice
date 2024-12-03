@@ -4,6 +4,7 @@ import { Problem } from "@/types/problem";
 import { TrainingRoutine } from "@/types/training-routine";
 import { useEffect, useState } from "react";
 import { ProblemDisplay } from "../ProblemDisplay";
+import { Results } from "./Results";
 
 /**
  * Display for a full practice routine.
@@ -31,19 +32,6 @@ export const Routine: React.FC<{ routine: TrainingRoutine }> = ({
     if (problem === null) return null;
     return <ProblemDisplay problem={problem} onSubmit={onSubmit} />;
   } else {
-    return (
-      <VStack spacing={4} align="start">
-        <Text fontSize="2xl">History</Text>
-        {history.map((answer, index) => (
-          <Box key={index} p={4} shadow="md" borderWidth="1px">
-            <Text>
-              Problem: {answer.problem.operand1} {answer.problem.type === "addition" ? "+" : "*"} {answer.problem.operand2}
-            </Text>
-            <Text>Your Answer: {answer.answer}</Text>
-            <Text>Time Taken: {(answer.timeTaken / 1000).toFixed(2)} seconds</Text>
-          </Box>
-        ))}
-      </VStack>
-    );
+    return <Results history={history} />;
   }
 };

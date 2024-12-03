@@ -16,7 +16,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
   onSubmit,
 }) => {
   const [answer, setAnswer] = useState("");
-  const [startTime] = useState(Date.now());
+  const [startTime, setStartTime] = useState(Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
@@ -26,6 +26,12 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
 
     return () => clearInterval(interval);
   }, [startTime]);
+
+  useEffect(() => {
+    setAnswer("");
+    setStartTime(Date.now());
+    setElapsedTime(0);
+  }, [problem]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(e.target.value);
@@ -40,7 +46,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
     onSubmit({
       problem,
       answer: parseFloat(answer),
-      timeTaken: Date.now() - startTime,
+      timeTaken: (Date.now() - startTime) / 1000,
     });
   };
 
