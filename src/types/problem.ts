@@ -16,3 +16,8 @@ interface BinaryProblem {
 }
 
 export type Problem = BinaryProblem;
+
+export interface ProblemConstraints {
+  minimumDifficulty: number;
+  noDuplicate?: Problem;
+}
