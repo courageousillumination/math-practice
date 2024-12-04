@@ -4,6 +4,17 @@ import {
   loadSummaryResults,
   removeSummaryResults,
 } from "@/logic/practice-history";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogCloseTrigger,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { SummaryResultTable } from "../SummaryResultTable";
 
 export const HistoricalResults: React.FC = () => {
@@ -19,16 +30,33 @@ export const HistoricalResults: React.FC = () => {
               justifyContent={"space-between"}
             >
               <Heading>{x.time}</Heading>
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  removeSummaryResults(x);
-                  // Statee management is not worth it.
-                  window.location.reload();
-                }}
-              >
-                Remove
-              </Button>
+
+              <DialogRoot>
+                <DialogTrigger asChild>
+                  <Button variant="ghost">Remove</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Confirm Delete</DialogTitle>
+                  </DialogHeader>
+                  <DialogBody>Are you sure?</DialogBody>
+                  <DialogFooter>
+                    <DialogActionTrigger asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </DialogActionTrigger>
+                    <Button
+                      onClick={() => {
+                        removeSummaryResults(x);
+                        // Statee management is not worth it.
+                        window.location.reload();
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </DialogFooter>
+                  <DialogCloseTrigger />
+                </DialogContent>
+              </DialogRoot>
             </Box>
             <SummaryResultTable summaryResults={x} />
           </Box>
