@@ -1,7 +1,17 @@
-import { BinaryOperand, ProblemTemplate } from "./problem-template";
+import {
+  BinaryOperand,
+  ProblemTemplate,
+  UnaryOperand,
+} from "./problem-template";
+
+export interface UnaryProblem {
+  type: UnaryOperand;
+  operand: number;
+  template: ProblemTemplate;
+}
 
 /** A binary problem. */
-interface BinaryProblem {
+export interface BinaryProblem {
   /** The type of operation. */
   type: BinaryOperand;
 
@@ -15,7 +25,7 @@ interface BinaryProblem {
   template: ProblemTemplate;
 }
 
-export type Problem = BinaryProblem;
+export type Problem = BinaryProblem | UnaryProblem;
 
 export interface ProblemConstraints {
   minimumDifficulty: number;

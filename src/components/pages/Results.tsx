@@ -1,5 +1,5 @@
 import { saveSummaryResults } from "@/logic/practice-history";
-import { solveProblem } from "@/logic/problem";
+import { problemToString, solveProblem } from "@/logic/problem";
 import { summarizeResults } from "@/logic/summary";
 import { TrainingRoutineResults } from "@/types/training-routine-results";
 import { VStack, Text, Table } from "@chakra-ui/react";
@@ -36,11 +36,7 @@ export const ResultsInternal: React.FC<{ results: TrainingRoutineResults }> = ({
             const isCorrect = answer.answer === correctAnswer;
             return (
               <Table.Row key={index}>
-                <Table.Cell>
-                  {answer.problem.operand1}{" "}
-                  {answer.problem.type === "addition" ? "+" : "*"}{" "}
-                  {answer.problem.operand2}
-                </Table.Cell>
+                <Table.Cell>{problemToString(answer.problem)}</Table.Cell>
                 <Table.Cell>{answer.answer}</Table.Cell>
                 <Table.Cell>{isCorrect ? "Yes" : "No"}</Table.Cell>
                 <Table.Cell>{isCorrect ? "-" : correctAnswer}</Table.Cell>

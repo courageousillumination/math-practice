@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Box, Button, Input, Text, VStack, HStack } from "@chakra-ui/react";
 import { Problem } from "@/types/problem";
 import { Answer } from "@/types/answer";
-import { solveProblem } from "@/logic/problem";
+import { problemToString, solveProblem } from "@/logic/problem";
 
 interface ProblemDisplayProps {
   /** Text to be displayed. */
@@ -67,8 +67,6 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
     }
   }, [answer, problem, handleSubmit, hasAutoSubmitted]);
 
-  const operationSymbol = problem.type === "addition" ? "+" : "*";
-
   return (
     <VStack align="center">
       <Box width="100%" display="flex" justifyContent={"space-between"}>
@@ -76,9 +74,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
         <Text fontSize="lg">{elapsedTime.toFixed(1)}s</Text>
       </Box>
       <HStack gap={2}>
-        <Text fontSize="2xl">{problem.operand1}</Text>
-        <Text fontSize="2xl">{operationSymbol}</Text>
-        <Text fontSize="2xl">{problem.operand2}</Text>
+        <Text fontSize="2xl">{problemToString(problem)}</Text>
       </HStack>
       <form
         onSubmit={(e) => {

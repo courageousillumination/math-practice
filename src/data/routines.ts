@@ -27,12 +27,18 @@ const Multiplication2x2: PartialSection = {
   problemTemplate: { type: "multiplication", scale1: 2, scale2: 2 },
 };
 
+const TwoDigitSquares: PartialSection = {
+  name: "2 Digit Squares",
+  problemTemplate: { type: "square", scale: 2 },
+};
+
 export const SECTIONS = [
   Addition1x1,
   Addition2x2,
   Multiplication1x1,
   Multiplication2x1,
   Multiplication2x2,
+  TwoDigitSquares,
 ];
 
 export const Multiplication2x2Routine: TrainingRoutine = {
@@ -41,7 +47,14 @@ export const Multiplication2x2Routine: TrainingRoutine = {
     { ...Multiplication1x1, count: 20 },
     { ...Addition2x2, count: 10 },
     { ...Multiplication2x1, count: 10 },
-    { ...Multiplication2x2, count: 5 },
+    { ...Multiplication2x2, count: 10 },
+  ],
+};
+
+export const TwoDigitSquaresRoutine: TrainingRoutine = {
+  sections: [
+    { ...Multiplication2x1, count: 10 },
+    { ...TwoDigitSquares, count: 10 },
   ],
 };
 

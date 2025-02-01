@@ -1,7 +1,18 @@
+export type UnaryOperand = "square";
 export type BinaryOperand = "multiplication" | "addition";
+export type Operand = UnaryOperand | BinaryOperand;
+
+/** A problem that involves only one operand. */
+export interface UnaryProblemTemplate {
+  /** The type of operation */
+  type: UnaryOperand;
+
+  /** The scale of the operation */
+  scale: number;
+}
 
 /** A binary problem involves 2 operands. */
-interface BinaryProblemTemplate {
+export interface BinaryProblemTemplate {
   type: BinaryOperand;
 
   /** Scale of the first operand. */
@@ -14,4 +25,4 @@ interface BinaryProblemTemplate {
 /**
  * A problem template defines a problem that can be generated.
  */
-export type ProblemTemplate = BinaryProblemTemplate;
+export type ProblemTemplate = BinaryProblemTemplate | UnaryProblemTemplate;
