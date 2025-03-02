@@ -1,6 +1,11 @@
-export type UnaryOperand = "square";
+export type UnaryOperand = "square" | "square-root";
 export type BinaryOperand = "multiplication" | "addition";
 export type Operand = UnaryOperand | BinaryOperand;
+export interface ScaleRange {
+  min: number;
+  max: number;
+}
+export type Scale = number | ScaleRange;
 
 /** A problem that involves only one operand. */
 export interface UnaryProblemTemplate {
@@ -8,7 +13,7 @@ export interface UnaryProblemTemplate {
   type: UnaryOperand;
 
   /** The scale of the operation */
-  scale: number;
+  scale: Scale;
 }
 
 /** A binary problem involves 2 operands. */
@@ -16,10 +21,10 @@ export interface BinaryProblemTemplate {
   type: BinaryOperand;
 
   /** Scale of the first operand. */
-  scale1: number;
+  scale1: Scale;
 
   /** Scale of the second operand. */
-  scale2: number;
+  scale2: Scale;
 }
 
 /**

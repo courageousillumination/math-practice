@@ -8,11 +8,12 @@ import {
   BinaryProblemTemplate,
   Operand,
   ProblemTemplate,
+  Scale,
   UnaryProblemTemplate,
 } from "@/types/problem-template";
 
 const BINARY_OPERANDS: Operand[] = ["addition", "multiplication"];
-const UNARY_OPERANDS: Operand[] = ["square"];
+const UNARY_OPERANDS: Operand[] = ["square", "square-root"];
 
 const isUnaryProblem = (p: Problem): p is UnaryProblem => {
   return UNARY_OPERANDS.includes(p.type);
@@ -100,6 +101,8 @@ export const solveProblem = (problem: Problem): number => {
       return problem.operand1 * problem.operand2;
     case "square":
       return problem.operand * problem.operand;
+    case "square-root":
+      return parseFloat(Math.sqrt(problem.operand).toFixed(1));
     default:
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       throw new Error(`Unhandled problem type: ${(problem as any).type}`);
@@ -116,9 +119,16 @@ export const getProblemTypeId = (problem: ProblemTemplate): string => {
 };
 
 /** Generates a number at the given scale. */
-const generateNumber = (scale: number) => {
-  const min = Math.pow(10, scale - 1);
-  const max = Math.pow(10, scale) - 1;
+const generateNumber = (scale: Scale) => {
+  let realScale: number;
+  if (typeof scale == "number") {
+    realScale = scale;
+  } else {
+    realScale =
+      Math.floor(Math.random() * (scale.max - scale.min + 1)) + scale.min;
+  }
+  const min = Math.pow(10, realScale - 1);
+  const max = Math.pow(10, realScale) - 1;
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
@@ -171,5 +181,7 @@ export const problemToString = (problem: Problem) => {
       return `${problem.operand1}*${problem.operand2}`;
     case "square":
       return `${problem.operand}^2`;
+    case "square-root":
+      return `√${problem.operand}`;
   }
 };

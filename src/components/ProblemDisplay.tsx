@@ -88,6 +88,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
           size="lg"
           textAlign="center"
           type="number"
+          step="0.01"
           mb={4}
         />
         <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
