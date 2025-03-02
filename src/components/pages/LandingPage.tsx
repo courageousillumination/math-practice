@@ -2,6 +2,7 @@ import {
   createRoutineFromPartialSection,
   Multiplication2x2Routine,
   SECTIONS,
+  SquareRouteRoutine,
   TwoDigitSquaresRoutine,
 } from "@/data/routines";
 import {
@@ -59,6 +60,18 @@ function LandingPage() {
             width="100%"
           >
             2 Digit Squares
+          </Button>
+          <Button
+            onClick={() =>
+              navigate("/practice", {
+                state: { routine: SquareRouteRoutine },
+              })
+            }
+            colorScheme="teal"
+            size="lg"
+            width="100%"
+          >
+            Square Roots
           </Button>
         </VStack>
         <Heading size="lg" as="h2">

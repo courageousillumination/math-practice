@@ -12,7 +12,9 @@ import {
   UnaryProblemTemplate,
 } from "@/types/problem-template";
 
-const BINARY_OPERANDS: Operand[] = ["addition", "multiplication"];
+// Operands that can result in a decimal part
+const DECMIAL_OPERANDS: Operand[] = ["square-root", "division"];
+const BINARY_OPERANDS: Operand[] = ["addition", "multiplication", "division"];
 const UNARY_OPERANDS: Operand[] = ["square", "square-root"];
 
 const isUnaryProblem = (p: Problem): p is UnaryProblem => {
@@ -90,6 +92,10 @@ export const problemEqual = (a: Problem, b: Problem) => {
   return false;
 };
 
+const getFixedValue = (num: number): number => {
+  return Math.trunc(num * 10) / 10;
+};
+
 /**
  * Solves a problem.
  */
@@ -102,7 +108,9 @@ export const solveProblem = (problem: Problem): number => {
     case "square":
       return problem.operand * problem.operand;
     case "square-root":
-      return parseFloat(Math.sqrt(problem.operand).toFixed(1));
+      return getFixedValue(Math.sqrt(problem.operand));
+    case "division":
+      return getFixedValue(problem.operand1 / problem.operand2);
     default:
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       throw new Error(`Unhandled problem type: ${(problem as any).type}`);
@@ -173,15 +181,23 @@ const meetsConstraints = (
   return true;
 };
 
-export const problemToString = (problem: Problem) => {
+export const problemToString = (problem: Problem): string => {
   switch (problem.type) {
     case "addition":
-      return `${problem.operand1}+${problem.operand2}`;
+      return `${problem.operand1} + ${problem.operand2}`;
     case "multiplication":
-      return `${problem.operand1}*${problem.operand2}`;
+      return `${problem.operand1} * ${problem.operand2}`;
     case "square":
       return `${problem.operand}^2`;
     case "square-root":
       return `√${problem.operand}`;
+    case "division":
+      return `${problem.operand1} / ${problem.operand2}`;
   }
+};
+
+export const suppotsAutoSubmit = (type: Operand): boolean => {
+  // Don't allow auto submit on decimal operands because we want you to put in the .0 if necessary
+  // (in case you're still computing we don't want to cheat here).
+  return !DECMIAL_OPERANDS.includes(type);
 };

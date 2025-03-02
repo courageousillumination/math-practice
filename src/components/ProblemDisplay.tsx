@@ -13,12 +13,16 @@ interface ProblemDisplayProps {
 
   /** Callback when the problem is done. */
   onSubmit: (answer: Answer) => void;
+
+  /** Whether auto submit should be enabled. */
+  allowAutoSubmit?: boolean;
 }
 
 export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
   problem,
   onSubmit,
   displayText,
+  allowAutoSubmit = true,
 }) => {
   const [answer, setAnswer] = useState("");
   const [startTime, setStartTime] = useState(Date.now());
@@ -59,13 +63,13 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
   }, [answer, problem, startTime, onSubmit]);
 
   useEffect(() => {
-    if (hasAutoSubmitted) return;
+    if (hasAutoSubmitted || !allowAutoSubmit) return;
     const correctAnswer = solveProblem(problem);
     if (correctAnswer === parseFloat(answer)) {
       handleSubmit();
       setHasAutosubmitted(true);
     }
-  }, [answer, problem, handleSubmit, hasAutoSubmitted]);
+  }, [answer, problem, handleSubmit, hasAutoSubmitted, allowAutoSubmit]);
 
   return (
     <VStack align="center">
@@ -92,7 +96,7 @@ export const ProblemDisplay: React.FC<ProblemDisplayProps> = ({
           mb={4}
         />
         <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2}>
-          {["1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "0", "Del"].map(
+          {["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "Del"].map(
             (item) => (
               <Button
                 key={item}

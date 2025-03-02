@@ -1,5 +1,5 @@
 export type UnaryOperand = "square" | "square-root";
-export type BinaryOperand = "multiplication" | "addition";
+export type BinaryOperand = "multiplication" | "addition" | "division";
 export type Operand = UnaryOperand | BinaryOperand;
 export interface ScaleRange {
   min: number;

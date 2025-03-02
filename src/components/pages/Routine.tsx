@@ -1,4 +1,8 @@
-import { generateProblemWithConstraints, solveProblem } from "@/logic/problem";
+import {
+  generateProblemWithConstraints,
+  solveProblem,
+  suppotsAutoSubmit,
+} from "@/logic/problem";
 import { Answer } from "@/types/answer";
 import { Problem } from "@/types/problem";
 import { TrainingRoutine } from "@/types/training-routine";
@@ -98,6 +102,7 @@ export const RoutineInternal: React.FC<{ routine: TrainingRoutine }> = ({
         }
         problem={problem}
         onSubmit={onSubmit}
+        allowAutoSubmit={suppotsAutoSubmit(currentSection.problemTemplate.type)}
       />
       {lastAnswerCorrect !== null && (
         <Box color={lastAnswerCorrect ? "green" : "red"}>

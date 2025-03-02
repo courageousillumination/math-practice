@@ -32,6 +32,15 @@ const TwoDigitSquares: PartialSection = {
   problemTemplate: { type: "square", scale: 2 },
 };
 
+const SmallDivision: PartialSection = {
+  name: "Division",
+  problemTemplate: {
+    type: "division",
+    scale1: { min: 2, max: 3 },
+    scale2: { min: 1, max: 2 },
+  },
+};
+
 const SmallRoots: PartialSection = {
   name: "Small roots",
   problemTemplate: { type: "square-root", scale: { min: 2, max: 3 } },
@@ -45,6 +54,7 @@ export const SECTIONS = [
   Multiplication2x2,
   TwoDigitSquares,
   SmallRoots,
+  SmallDivision,
 ];
 
 export const Multiplication2x2Routine: TrainingRoutine = {
@@ -67,6 +77,7 @@ export const TwoDigitSquaresRoutine: TrainingRoutine = {
 export const SquareRouteRoutine: TrainingRoutine = {
   sections: [
     { ...TwoDigitSquares, count: 5 },
+    { ...SmallDivision, count: 5 },
     { ...SmallRoots, count: 5 },
   ],
 };
